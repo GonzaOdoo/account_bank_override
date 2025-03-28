@@ -1,0 +1,27 @@
+<odoo>
+    <record id="view_bank_statement_tags_tree" model="ir.ui.view">
+        <field name="name">bank.statement.tags.tree</field>
+        <field name="model">bank.statement.tags</field>
+        <field name="arch" type="xml">
+            <tree string="Bank Statement Tags" editable="bottom">
+                <field name="company_id" column_invisible="1"/>
+                <field name="name" string="Tag Name"/>
+                <field name="default_account_id" string="Default Account"/>
+                <field name="suspense_account_id" string="Suspense Account"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Acción de ventana para el menú -->
+    <record id="action_bank_statement_tags" model="ir.actions.act_window">
+        <field name="name">Bank Statement Tags</field>
+        <field name="res_model">bank.statement.tags</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_bank_statement_tags_tree"/>
+        <field name="target">current</field>
+    </record>
+
+    <!-- Elemento de menú -->
+    <menuitem id="menu_bank_statement_tags"  name="Bank Tags" parent="account.menu_finance_configuration" action="action_bank_statement_tags" sequence="10"/>
+
+</odoo>

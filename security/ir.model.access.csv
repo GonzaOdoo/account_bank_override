@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_bank_statement_tags_user,bank.statement.tags.user,model_bank_statement_tags,base.group_user,1,1,1,0
+access_bank_statement_tags_manager,bank.statement.tags.manager,model_bank_statement_tags,base.group_system,1,1,1,1

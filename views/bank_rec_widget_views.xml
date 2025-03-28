@@ -1,0 +1,26 @@
+<odoo>
+    <record id="view_bank_statement_line_form_bank_rec_widget_inherit" model="ir.ui.view">
+        <field name="name">account.bank.statement.line.form.bank_rec_widget.inherit</field>
+        <field name="model">account.bank.statement.line</field>
+        <field name="inherit_id" ref="account_accountant.view_bank_statement_line_form_bank_rec_widget"/>
+        <field name="arch" type="xml">
+            <!-- Agregar campos en el primer grupo -->
+            <xpath expr="//field[@name='amount']" position="before">
+                <field name="is_negative" widget="radio" options="{'horizontal':true}"/>
+                <field name="fake_amount"/>
+                <field name="tax_ids" widget="many2many_tags"/>
+            </xpath>
+            <xpath expr="//field[@name='amount']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='payment_ref']" position="after">
+                <field name="bank_tag_id"/>
+            </xpath>
+            <xpath expr="//field[@name='payment_ref']" position="attributes">
+                <attribute name="required">0</attribute>
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
