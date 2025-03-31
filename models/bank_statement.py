@@ -6,7 +6,7 @@ class BankStatement(models.Model):
     _inherit = "account.bank.statement.line"
 
     fake_amount = fields.Monetary('Monto')
-    is_negative = fields.Selection([('debit','Debito'),('credit','Credito')],string='Tipo',default='debit',required=True)
+    is_negative = fields.Selection([('debit','Ingreso'),('credit','Egreso')],string='Tipo',default='debit',required=True)
     bank_tag_id = fields.Many2one(
         comodel_name='bank.statement.tags',
         string='Etiqueta',
