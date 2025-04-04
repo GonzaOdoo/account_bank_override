@@ -4,10 +4,10 @@
         <field name="model">bank.statement.tags</field>
         <field name="arch" type="xml">
             <tree string="Bank Statement Tags" editable="bottom">
-                <field name="company_id" column_invisible="1"/>
                 <field name="name" string="Tag Name"/>
                 <field name="default_account_id" string="Default Account"/>
                 <field name="suspense_account_id" string="Suspense Account"/>
+                <field name="company_id"/>
             </tree>
         </field>
     </record>

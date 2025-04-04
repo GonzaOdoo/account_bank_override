@@ -45,18 +45,35 @@ class BankStatement(models.Model):
         journal_currency = self.journal_id.currency_id or company_currency
         foreign_currency = self.foreign_currency_id or journal_currency or company_currency
 
+        # Calcular el monto con impuestos
+        tax_results = self.tax_ids.compute_all(
+            self.amount_currency if foreign_currency != journal_currency else self.amount,
+            currency=foreign_currency,
+            quantity=1.0,
+            product=None,
+            partner=self.partner_id
+        )
+        total_with_tax = tax_results['total_included']
+
         journal_amount = self.amount
         if foreign_currency == journal_currency:
             transaction_amount = journal_amount
+            transaction_amount_with_tax = total_with_tax
         else:
             transaction_amount = self.amount_currency
+            transaction_amount_with_tax = total_with_tax
+    
         if journal_currency == company_currency:
             company_amount = journal_amount
+            company_amount_with_tax = total_with_tax
         elif foreign_currency == company_currency:
             company_amount = transaction_amount
+            company_amount_with_tax = transaction_amount_with_tax
         else:
             company_amount = journal_currency\
                 ._convert(journal_amount, company_currency, self.journal_id.company_id, self.date)
+            company_amount_with_tax = journal_currency\
+                ._convert(total_with_tax, company_currency, self.journal_id.company_id, self.date)
 
         liquidity_line_vals = {
             'name': self.bank_tag_id.name,
@@ -64,10 +81,9 @@ class BankStatement(models.Model):
             'partner_id': self.partner_id.id,
             'account_id': self.bank_tag_id.default_account_id.id,
             'currency_id': journal_currency.id,
-            'tax_ids': [(6, 0, self.tax_ids.ids)],
-            'amount_currency': journal_amount,
-            'debit': company_amount > 0 and company_amount or 0.0,
-            'credit': company_amount < 0 and -company_amount or 0.0,
+            'amount_currency': total_with_tax if foreign_currency == journal_currency else journal_amount,
+            'debit': company_amount_with_tax > 0 and company_amount_with_tax or 0.0,
+            'credit': company_amount_with_tax < 0 and -company_amount_with_tax or 0.0,
         }
 
         # Create the counterpart line values.
@@ -77,6 +93,7 @@ class BankStatement(models.Model):
             'move_id': self.move_id.id,
             'partner_id': self.partner_id.id,
             'currency_id': foreign_currency.id,
+            'tax_ids': [(6, 0, self.tax_ids.ids)],
             'amount_currency': -transaction_amount,
             'debit': -company_amount if company_amount < 0.0 else 0.0,
             'credit': company_amount if company_amount > 0.0 else 0.0,
