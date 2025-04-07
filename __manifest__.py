@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Modificacion de pantalla de transaccion",
+    'name': "Modificacion de pantalla de transaccion bancaria",
 
     'summary': """
         Este modulo modifica la pantalla de nueva transaccion bancaria, añadiendo nuevos campos y funcionalidades""",
