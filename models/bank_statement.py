@@ -6,7 +6,7 @@ class BankStatement(models.Model):
     _inherit = "account.bank.statement.line"
 
     fake_amount = fields.Monetary('Monto')
-    is_negative = fields.Selection([('debit','Ingreso'),('credit','Egreso')],string='Tipo',default='debit',required=True)
+    is_negative = fields.Selection([('debit','Ingreso'),('credit','Egreso')],string='Tipo',default='credit',required=True)
     bank_tag_id = fields.Many2one(
         comodel_name='bank.statement.tags',
         string='Etiqueta',
@@ -79,7 +79,7 @@ class BankStatement(models.Model):
             'name': self.bank_tag_id.name,
             'move_id': self.move_id.id,
             'partner_id': self.partner_id.id,
-            'account_id': self.bank_tag_id.default_account_id.id,
+            'account_id': self.journal_id.default_account_id.id,
             'currency_id': journal_currency.id,
             'amount_currency': total_with_tax if foreign_currency == journal_currency else journal_amount,
             'debit': company_amount_with_tax > 0 and company_amount_with_tax or 0.0,

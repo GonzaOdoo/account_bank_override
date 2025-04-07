@@ -3,18 +3,17 @@
         <field name="name">bank.statement.tags.tree</field>
         <field name="model">bank.statement.tags</field>
         <field name="arch" type="xml">
-            <tree string="Bank Statement Tags" editable="bottom">
-                <field name="name" string="Tag Name"/>
-                <field name="default_account_id" string="Default Account"/>
-                <field name="suspense_account_id" string="Suspense Account"/>
-                <field name="company_id"/>
+            <tree string="Conceptos bancarios" editable="bottom">
+                <field name="name" string="Nombre"/>
+                <field name="suspense_account_id" string="Cuenta transitoria"/>
+                <field name="company_id" string="Empresa"/>
             </tree>
         </field>
     </record>
 
     <!-- Acción de ventana para el menú -->
     <record id="action_bank_statement_tags" model="ir.actions.act_window">
-        <field name="name">Bank Statement Tags</field>
+        <field name="name">Conceptos Bancarios</field>
         <field name="res_model">bank.statement.tags</field>
         <field name="view_mode">tree</field>
         <field name="view_id" ref="view_bank_statement_tags_tree"/>
@@ -22,6 +21,6 @@
     </record>
 
     <!-- Elemento de menú -->
-    <menuitem id="menu_bank_statement_tags"  name="Bank Tags" parent="account.menu_finance_configuration" action="action_bank_statement_tags" sequence="10"/>
+    <menuitem id="menu_bank_statement_tags"  name="Conceptos Bancarios" parent="account.account_banks_menu" action="action_bank_statement_tags" sequence="10"/>
 
 </odoo>
