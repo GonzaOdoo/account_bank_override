@@ -5,20 +5,21 @@
         <field name="inherit_id" ref="account_accountant.view_bank_statement_line_form_bank_rec_widget"/>
         <field name="arch" type="xml">
             <!-- Agregar campos en el primer grupo -->
+            
             <xpath expr="//field[@name='amount']" position="before">
+                <field name="special_transaction" invisible="1"/>
                 <field name="is_negative" widget="radio" options="{'horizontal':true}"/>
                 <field name="fake_amount"/>
-                <field name="tax_ids" widget="many2many_tags"/>
+                <field name="tax_ids" widget="many2many_tags" invisible="not special_transaction"/>
             </xpath>
             <xpath expr="//field[@name='amount']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
             <xpath expr="//field[@name='payment_ref']" position="after">
-                <field name="bank_tag_id"/>
+                <field name="bank_tag_id" invisible="not special_transaction"/>
             </xpath>
-            <xpath expr="//field[@name='payment_ref']" position="attributes">
-                <attribute name="required">0</attribute>
-                <attribute name="invisible">1</attribute>
+            <xpath expr="//field[@name='payment_ref']" position="replace">
+                <field name="payment_ref" required="not special_transaction" invisible="special_transaction"  readonly="is_reconciled and amount != 0"/>
             </xpath>
         </field>
     </record>

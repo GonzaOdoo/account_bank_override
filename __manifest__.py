@@ -25,6 +25,7 @@
         'security/ir.model.access.csv',
         'views/bank_rec_widget_views.xml',
         'views/bank_tags.xml',
+        'views/account_journal_views.xml',
     ]
 
 }
