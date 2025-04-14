@@ -13,7 +13,6 @@ class BankStatementTags(models.Model):
         ondelete='restrict', 
         readonly=False, 
         store=True,
-        required = True,
         string = 'Cuenta transitoria',
         domain = "[('deprecated', '=', False)]",
     )

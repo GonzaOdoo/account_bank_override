@@ -37,11 +37,11 @@ class BankStatement(models.Model):
             return super(BankStatement, self)._prepare_move_line_default_vals(self.journal_id.suspense_account_id.id)
         else:
             if not counterpart_account_id:
-                counterpart_account_id = self.bank_tag_id.suspense_account_id.id
+                counterpart_account_id = self.bank_tag_id.suspense_account_id.id if self.bank_tag_id.suspense_account_id.id else self.journal_id.suspense_account_id.id
             if not counterpart_account_id:
                 raise UserError(_(
                     "You can't create a new statement line without a suspense account set on the %s journal.",
-                    self.bank_tag_id.name,
+                    self.journal_id.name,
                 ))
     
             company_currency = self.journal_id.company_id.sudo().currency_id
