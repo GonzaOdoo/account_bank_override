@@ -17,6 +17,7 @@
             </xpath>
             <xpath expr="//field[@name='payment_ref']" position="after">
                 <field name="bank_tag_id" invisible="not special_transaction"/>
+                <field name="notes"/>
             </xpath>
             <xpath expr="//field[@name='payment_ref']" position="replace">
                 <field name="payment_ref" required="not special_transaction" invisible="special_transaction"  readonly="is_reconciled and amount != 0"/>

@@ -19,6 +19,8 @@ class BankStatement(models.Model):
         check_company=True,
     )
     special_transaction = fields.Boolean('Menu especial',related='journal_id.special_transaction')
+
+    notes = fields.Char('Nota')
     
     @api.onchange('fake_amount', 'is_negative')
     def _on_change_amount(self):
@@ -26,6 +28,15 @@ class BankStatement(models.Model):
             sign = -1 if record.is_negative == 'credit' else 1
             record.amount = sign * record.fake_amount
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        # OVERRIDE
+        for vals in vals_list:
+            if vals['notes']:
+                vals['narration'] = vals['notes']
+        st_lines = super().create(vals_list)
+        
+        return st_lines
 
     def _prepare_move_line_default_vals(self, counterpart_account_id=None):
         """ Prepare the dictionary to create the default account.move.lines for the current account.bank.statement.line
